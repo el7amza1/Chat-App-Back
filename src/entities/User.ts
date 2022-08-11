@@ -25,12 +25,15 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
+  image: string;
+
+  @Column({ nullable: true })
   token: string;
 
   @CreateDateColumn()
   createdAt: Timestamp;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamptz", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Timestamp;
 }
