@@ -10,7 +10,6 @@ import {
 
 @Entity("chat-app-user")
 export class User extends BaseEntity {
-    
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,14 +19,14 @@ export class User extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
   @Column()
-  hash: string;
+  token: string;
 
   @CreateDateColumn()
   createdAt: Timestamp;
