@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { User } from "../entities/User";
 import bcrypt from "bcrypt";
+import {auth} from "../middlewares/auth"
+import { generateAuth } from "../utiles";
+import { RequestAuth } from "../typies";
 
 const router = Router();
 
@@ -24,8 +27,10 @@ router.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
     });
+
     await user.save();
-    res.send(user);
+    const token = generateAuth(user.email);
+    res.send({ user, token });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error });
@@ -43,11 +48,19 @@ router.post("/login", async (req, res) => {
     if (!correctPassword) {
       return res.status(400).send({ message: "password is not correct" });
     }
-    res.json(user);
+
+    const token = generateAuth(user.email);
+
+    res.json({user,token });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error });
   }
 });
+
+router.get('/me',auth,async(req:RequestAuth,res)=>{
+  res.json({user:req.user})
+
+})
 
 export default router;
