@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -21,5 +22,6 @@ export class Chat extends BaseEntity {
   messages: Message[];
 
   @ManyToMany(() => User, (user) => user.chats)
+  @JoinTable()
   users: User[];
 }
