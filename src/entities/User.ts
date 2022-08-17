@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -35,10 +36,11 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   token: string;
 
-  @OneToMany(() => Message, (messages) => messages.user)
+  @OneToMany(() => Message, (messages) => messages.user,{nullable:true})
   message: Message[];
 
-  @ManyToMany(() => Chat, (chats) => chats.users)
+  @ManyToMany(() => Chat, (chats) => chats.users,{nullable:true})
+  @JoinTable()
   chats: Chat[];
 
   @CreateDateColumn()
