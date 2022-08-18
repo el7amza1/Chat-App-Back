@@ -12,6 +12,8 @@ export const auth = async (req: RequestAuth, res: Response, next: NextFunction) 
   const { email } = jwt.verify(token as string, process.env.JWT_SECRET!) as {
     email: string;
   };
+  console.log(email);
+
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return res.status(404).send({ message: "User Not Found" });
@@ -19,3 +21,9 @@ export const auth = async (req: RequestAuth, res: Response, next: NextFunction) 
   req.user = user;
   next();
 };
+
+const hamada :any ={
+  name: "hamada",
+  age : 23
+}
+hamada.positon = "eng"
