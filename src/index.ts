@@ -4,7 +4,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import userRouter from "./routes/users";
+import messageRouter from "./routes/messages"
 import { Server } from "socket.io";
+
 
 const app = express();
 const http = require("http").Server(app);
@@ -34,7 +36,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/users", userRouter);
-
+app.use("/messages" ,messageRouter);
 http.listen(4545);
 app.listen(process.env.PORT, async () => {
   console.log(`now you connected by port No ${process.env.PORT}`);
