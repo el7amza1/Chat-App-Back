@@ -13,8 +13,9 @@ router.get("/" ,auth, async(req : RequestAuth,res) =>{
         const {chats} =( await User.findOne({ where: { id: user.id }, relations: { chats: { users: true, messages: true } } }))!
         
             res.send({chats})
-    } catch (error) {
-    }
-})
 
+    } catch (error) { 
+    }
+    
+})
 export default router
