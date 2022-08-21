@@ -14,7 +14,6 @@ router.get("/" ,auth, async(req : RequestAuth,res) =>{
         
             res.send({chats})
     } catch (error) {
-        
     }
 })
 
