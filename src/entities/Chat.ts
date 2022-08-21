@@ -18,9 +18,10 @@ export class Chat extends BaseEntity {
   @Column()
   chatName: string;
 
-  @OneToMany(() => Message, (message) => message.chat)
+  @OneToMany(() => Message, (message) => message.chat,{nullable:true})
   messages: Message[];
 
   @ManyToMany(() => User, (user) => user.chats)
   users: User[];
+  
 }

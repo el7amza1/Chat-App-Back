@@ -24,10 +24,10 @@ export class User extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column({ unique: true,select:false })
+  @Column({ unique: true })
   email: string;
 
-  @Column( {select:false})
+  @Column()
   password: string;
 
   @Column({ nullable: true })
