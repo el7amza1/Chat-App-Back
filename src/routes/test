@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { In } from "typeorm";
 import { Chat } from "../entities/Chat";
 import { User } from "../entities/User";
 import { auth } from "../middlewares/auth";
@@ -24,17 +25,11 @@ router.post("/group", auth, async (req: RequestAuth, res) => {
         if (!chatName || !userGroup) {
             return res.status(403).send({ message: "data must not empty" })
         }
-        let listUser: User[] =[]
-        for (let i = 0; i < userGroup.length ; i++) {
-            const user = await User.findOne({where :{id: userGroup[i]}});
-         if (user){
-            listUser.push(user)
-         }
-        }
-
+        const users = await User.find({where :{id : In(userGroup) }});
+        users.push(userAdmin as User)
         const chat =  Chat.create({
             chatName,
-            users:[...listUser,userAdmin]
+            users,
         })
         
        await chat.save()
