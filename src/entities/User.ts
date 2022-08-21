@@ -24,10 +24,10 @@ export class User extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true,select:false })
   email: string;
 
-  @Column()
+  @Column( {select:false})
   password: string;
 
   @Column({ nullable: true })
@@ -36,16 +36,17 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   token: string;
 
-  @OneToMany(() => Message, (messages) => messages.user,{nullable:true})
-  message: Message[];
-
-  @ManyToMany(() => Chat, (chats) => chats.users,{nullable:true})
-  @JoinTable()
-  chats: Chat[];
-
   @CreateDateColumn()
   createdAt: Timestamp;
 
   @UpdateDateColumn({ type: "timestamptz", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Timestamp;
+
+  @OneToMany(() => Message, (messages) => messages.user,{nullable:true})
+  message: Message[];
+
+  @ManyToMany(() => Chat, (chat) => chat.users,{nullable:true})
+  @JoinTable()
+  chats: Chat[];
+
 }

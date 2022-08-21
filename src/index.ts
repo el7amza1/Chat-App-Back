@@ -5,6 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import userRouter from "./routes/users";
 import messageRouter from "./routes/messages"
+import chatRouter from "./routes/chat"
 import { Server } from "socket.io";
 
 
@@ -37,6 +38,7 @@ app.use(urlencoded({ extended: false }));
 
 app.use("/users", userRouter);
 app.use("/messages" ,messageRouter);
+app.use("/chats", chatRouter )
 http.listen(4545);
 app.listen(process.env.PORT, async () => {
   console.log(`now you connected by port No ${process.env.PORT}`);
