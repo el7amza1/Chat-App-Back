@@ -1,9 +1,12 @@
+import { Message } from "./../entities/Message";
 import { Router } from "express";
 import { User } from "../entities/User";
 import bcrypt from "bcrypt";
-import {auth} from "../middlewares/auth"
+import { auth } from "../middlewares/auth";
 import { generateAuth } from "../utiles";
 import { RequestAuth } from "../typies";
+import { notEqual } from "assert";
+import { Not } from "typeorm";
 
 const router = Router();
 
@@ -51,16 +54,33 @@ router.post("/login", async (req, res) => {
 
     const token = generateAuth(user.email);
 
-    res.json({user,token });
+    res.json({ user, token });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error });
   }
 });
 
-router.get('/me',auth,async(req:RequestAuth,res)=>{
-  res.json({user:req.user})
+router.get("/me", auth, async (req: RequestAuth, res) => {
+  res.json({ user: req.user });
+});
 
-})
+router.get("/", auth, async (req: RequestAuth, res) => {
+  try {
+    const userAdmin = req.user!;
+    if (!userAdmin) {
+      return res.status(404).send({ message: "user Admin is not found" });
+    }
+    const users = await User.find({
+      where: { id: Not(userAdmin.id) },
+      select: ["id","firstName", "lastName", "image"],
+      relations: { message: true },
+    });
+    res.send({users:users});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error });
+  }
+});
 
 export default router;

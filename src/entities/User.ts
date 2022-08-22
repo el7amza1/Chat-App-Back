@@ -42,11 +42,10 @@ export class User extends BaseEntity {
   @UpdateDateColumn({ type: "timestamptz", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Timestamp;
 
-  @OneToMany(() => Message, (messages) => messages.user,{nullable:true})
+  @OneToMany(() => Message, (messages) => messages.user, { nullable: true })
   message: Message[];
 
-  @ManyToMany(() => Chat, (chat) => chat.users,{nullable:true})
+  @ManyToMany(() => Chat, (chat) => chat.users, { nullable: true })
   @JoinTable()
   chats: Chat[];
-
 }
