@@ -4,15 +4,17 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import userRouter from "./routes/users";
-import messageRouter from "./routes/messages"
-import chatRouter from "./routes/chat"
+import messageRouter from "./routes/messages";
+import chatRouter from "./routes/chat";
 import { Server } from "socket.io";
-
+import http from "http";
 
 const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const server = http.createServer(app);
+const io = new Server(server);
 
+// const http = require("http").Server(app);
+// const io = require("socket.io")(http);
 // const io = new Server(app);
 
 app.get("/", (req, res) => {
@@ -37,10 +39,11 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/users", userRouter);
-app.use("/messages" ,messageRouter);
-app.use("/chats", chatRouter )
-http.listen(4545);
-app.listen(process.env.PORT, async () => {
+app.use("/messages", messageRouter);
+app.use("/chats", chatRouter);
+
+// server.listen(4500);
+server.listen(process.env.PORT, async () => {
   console.log(`now you connected by port No ${process.env.PORT}`);
   try {
     await AppDataSource.initialize();
